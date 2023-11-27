@@ -1,0 +1,249 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
+             xmlns:dxcv="clr-namespace:DevExpress.Maui.CollectionView;assembly=DevExpress.Maui.CollectionView"
+             xmlns:dxcr="clr-namespace:DevExpress.Maui.Core;assembly=DevExpress.Maui.Core"
+             xmlns:dxga="clr-namespace:DevExpress.Maui.Gauges;assembly=DevExpress.Maui.Gauges"
+             xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:local="clr-namespace:maui_gauges"
+             ios:Page.UseSafeArea="true"
+             x:Class= "maui_gauges.MainPage">
+    <ContentPage.BindingContext>
+        <local:RadialGaugeViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="LegendItem"
+                          x:DataType="local:RoomInfo">
+                <dxcr:DXStackLayout Orientation="Horizontal" Margin="0,5">
+                    <RoundRectangle BackgroundColor="{Binding Color}"
+                                    WidthRequest="8"
+                                    HeightRequest="40"
+                                    CornerRadius="4"
+                                    Margin="5" />
+                    <dxcr:DXStackLayout VerticalOptions="Center">
+                        <Label Text="{Binding Value}"
+                               TextColor="{Binding Color}"
+                               FontAttributes="Bold"
+                               FontSize="Header" />
+                        <Label Text="{Binding Room}" />
+                    </dxcr:DXStackLayout>
+                </dxcr:DXStackLayout>
+            </DataTemplate>
+            <Style x:Name="CardBorderStyle" TargetType="dxcr:DXBorder">
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderColor" Value="{dxcr:ThemeColor Key=OnSurfaceVariant}" />
+                <Setter Property="CornerRadius" Value="5,5,5,5" />
+                <Setter Property="Margin" Value="10, 5" />
+                <Setter Property="Padding" Value="5" />
+                <Setter Property="Shadow">
+                    <OnPlatform x:TypeArguments="Shadow">
+                        <On Platform="iOS">
+                            <On.Value>
+                                <Shadow Brush="{dxcr:ThemeColor Key=OnSurface}"
+                                        Offset="0,2"
+                                        Radius="2"
+                                        Opacity="0.22" />
+                            </On.Value>
+                        </On>
+                        <On Platform="Android" >
+                            <On.Value>
+                                <Shadow Brush="{dxcr:ThemeColor Key=OnSurface}"
+                                        Offset="0,4"
+                                        Radius="2"
+                                        Opacity="0.15" />
+                            </On.Value>
+                        </On>
+                    </OnPlatform>
+                </Setter>
+                <Setter Property="BackgroundColor" Value="{dxcr:ThemeColor Key=SurfaceContainer}" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{dxcr:ThemeColor Key=OnSurface}"/>
+                <Setter Property="FontSize" Value="15"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowDefinitions="4*, 3*, 3*"
+          ColumnDefinitions="*, *"
+          BackgroundColor="{dxcr:ThemeColor Key=Surface}">
+            <dxcr:DXBorder Grid.ColumnSpan="2">
+                <dxcr:DXDockLayout>
+                    <Label Text="Power"
+                       Padding="10, 5"
+                       FontSize="Subtitle"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Start"
+                       dxcr:DXDockLayout.Dock="Top"/>
+                    <dxcv:DXCollectionView ItemsSource="{Binding Rooms}"
+                                       ItemTemplate="{StaticResource LegendItem}"
+                                       WidthRequest="100"
+                                       HorizontalOptions="Center"
+                                       dxcr:DXDockLayout.Dock="Right"/>
+                    <Label Text="All rooms" HorizontalOptions="Center" dxcr:DXDockLayout.Dock="Top" />
+                    <dxga:RadialGauge Grid.Row="1">
+                        <dxga:RadialScale StartAngle="-90" SweepAngle="360" Thickness="10" Fill="#E1E8D8">
+                            <dxga:RangeIndicator EndValue="{Binding LivingRoomPowerLevel}" Fill="{Binding LivingRoomPowerLevelBrush}" StartThickness="10" />
+                        </dxga:RadialScale>
+                        <dxga:RadialScale StartAngle="-90" SweepAngle="360" Thickness="10" Fill="#DDE5F6">
+                            <dxga:RangeIndicator EndValue="{Binding BedroomPowerLevel}" Fill="{Binding BedroomPowerLevelBrush}" StartThickness="10"/>
+                        </dxga:RadialScale>
+                        <dxga:RadialScale StartAngle="-90" SweepAngle="360" Thickness="10" Fill="#EFDDE6">
+                            <dxga:RangeIndicator EndValue="{Binding KitchenPowerLevel}" Fill="{Binding KitchenPowerLevelBrush}" StartThickness="10"/>
+                        </dxga:RadialScale>
+                        <dxga:RadialGauge.Content>
+                            <dxcr:DXImage Source="energy" TintColor="#E9C542" />
+                        </dxga:RadialGauge.Content>
+                    </dxga:RadialGauge>
+                </dxcr:DXDockLayout>
+            </dxcr:DXBorder>
+            <dxcr:DXBorder Grid.Row="1" Grid.ColumnSpan="2">
+                <dxcr:DXDockLayout>
+                    <Label dxcr:DXDockLayout.Dock="Top"
+                       Text="Sun battery"
+                       Padding="10, 5"
+                       FontSize="Subtitle"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Start" />
+                    <Grid RowDefinitions="Auto, *"
+                      ColumnDefinitions="*, *">
+                        <Label Text="Charge level" HorizontalOptions="Center" />
+                        <dxga:RadialGauge Grid.Row="1">
+                            <dxga:RadialScale Fill="#F4ECE2"
+                                          ShowTickmarkLabels="False"
+                                          StrokeCap="Butt"
+                                          StartAngle="180"
+                                          SweepAngle="180"
+                                          Thickness="10"
+                                          MajorTickmarkCount="2"
+                                          MajorTickmarkColor="#E9C542"
+                                          MajorTickmarkLength="14">
+                                <dxga:RangeIndicator x:Name="SunButteryEfficiency" EndValue="0.4" Fill="#E9C542" StartThickness="10" StrokeCap="Butt" />
+                            </dxga:RadialScale>
+                            <dxga:RadialGauge.Content>
+                                <Label Text="40%" FontSize="Title" TextColor="#E9C542" FontAttributes="Bold"/>
+                            </dxga:RadialGauge.Content>
+                        </dxga:RadialGauge>
+                        <Label Text="Hours left" HorizontalOptions="Center" Grid.Column="1"/>
+                        <dxga:RadialGauge Grid.Column="1" Grid.Row="1">
+                            <dxga:RadialScale Fill="#ECEEF9"
+                                          StrokeCap="Butt"
+                                          StartValue="0"
+                                          EndValue="180"
+                                          MajorTickmarkCount="5"
+                                          MinorTickmarkCount="3"
+                                          TickmarkLabelPosition="Inside"
+                                          MajorTickmarkPosition="Inside"
+                                          MinorTickmarkPosition="Inside"
+                                          MajorTickmarkOffset="3"
+                                          MinorTickmarkOffset="3"
+                                          TickmarkLabelOffset="4"
+                                          Thickness="10"
+                                          StartAngle="180"
+                                          SweepAngle="180"
+                                          TickmarkLabelFormat="F0">
+                                <dxga:RangeIndicator EndValue="90" Fill="#6486C9" StartThickness="10" StrokeCap="Butt" />
+                            </dxga:RadialScale>
+                            <dxga:RadialGauge.Content>
+                                <Label Text="90h" FontSize="Title" TextColor="#6486C9" FontAttributes="Bold"/>
+                            </dxga:RadialGauge.Content>
+                        </dxga:RadialGauge>
+                    </Grid>
+                </dxcr:DXDockLayout>
+            </dxcr:DXBorder>
+            <dxcr:DXBorder Grid.Row="2" Margin="10, 5, 5, 5" Padding="0">
+                <Grid RowDefinitions="Auto, *">
+                    <Label Text="Pressure"
+                        Padding="10, 5"
+                        FontSize="Subtitle"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Start" />
+                    <dxga:RadialGauge Grid.Row="1">
+                        <dxga:RadialScale Thickness="10"
+                                      StrokeCap="Butt"
+                                      StartAngle="180"
+                                      SweepAngle="180"
+                                      MajorTickmarkCount="7"
+                                      MinorTickmarkCount="1"
+                                      TickmarkLabelFormat="F0"
+                                      MajorTickmarkPosition="Outside"
+                                      MinorTickmarkPosition="Outside"
+                                      TickmarkLabelPosition="Outside"
+                                      MajorTickmarkOffset="4"
+                                      MinorTickmarkOffset="4"
+                                      TickmarkLabelOffset="10"
+                                      StartValue="0"
+                                      EndValue="12"
+                                      Fill="Transparent">
+                            <dxga:RangeIndicator StartThickness="10"
+                                             StartValue="0"
+                                             EndValue="4"
+                                             Fill="#9BBB72"
+                                             StrokeCap="Butt"/>
+                            <dxga:RangeIndicator StartThickness="10"
+                                             StartValue="4"
+                                             EndValue="8"
+                                             Fill="#F9DC77"
+                                             StrokeCap="Butt"/>
+                            <dxga:RangeIndicator StartThickness="10"
+                                             StartValue="8"
+                                             EndValue="12"
+                                             Fill="#EF938D"
+                                             StrokeCap="Butt"/>
+                            <dxga:NeedleIndicator Fill="#49454E"
+                                              Value="3.75"
+                                              Size="30"/>
+                        </dxga:RadialScale>
+                    </dxga:RadialGauge>
+                </Grid>
+            </dxcr:DXBorder>
+            <dxcr:DXBorder Grid.Row="2" Grid.Column="2" Margin="5, 5, 10, 5" Padding="0">
+                <Grid RowDefinitions="Auto, *">
+                    <Label Text="Temperature"
+                       Padding="10, 5"
+                       FontSize="Subtitle"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Start" />
+                    <dxga:RadialGauge Grid.Row="1">
+                        <dxga:RadialScale Thickness="10"
+                                      StrokeCap="Butt"
+                                      StartAngle="180"
+                                      SweepAngle="180"
+                                      MajorTickmarkCount="5"
+                                      MinorTickmarkCount="3"
+                                      MajorTickmarkPosition="Inside"
+                                      MinorTickmarkPosition="Inside"
+                                      MajorTickmarkOffset="4"
+                                      MinorTickmarkOffset="4"
+                                      TickmarkLabelOffset="8"
+                                      TickmarkLabelFormat="{}{0:F0}°"
+                                      StartValue="0"
+                                      EndValue="40"
+                                      Fill="Transparent">
+                            <dxga:RangeIndicator StartThickness="10"
+                                             StartValue="0"
+                                             EndValue="13.333"
+                                             Fill="#9BBB72"
+                                             StrokeCap="Butt"/>
+                            <dxga:RangeIndicator StartThickness="10"
+                                             StartValue="13.333"
+                                             EndValue="26.666"
+                                             Fill="#F9DC77"
+                                             StrokeCap="Butt"/>
+                            <dxga:RangeIndicator StartThickness="10"
+                                             StartValue="26.666"
+                                             EndValue="40"
+                                             Fill="#EF938D"
+                                             StrokeCap="Butt"/>
+                            <dxga:MarkerIndicator Fill="#49454E"
+                                              Position="Inside"
+                                              Value="22"
+                                              Size="20"/>
+                        </dxga:RadialScale>
+                    </dxga:RadialGauge>
+                </Grid>
+            </dxcr:DXBorder>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
