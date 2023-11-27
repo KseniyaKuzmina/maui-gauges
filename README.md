@@ -4,6 +4,7 @@ Automatically generated badges
 
 # DevExpress Radial Gauge for .NET MAUI
 
+
 This example shows how to use the [Radial Gauge](https://docs.devexpress.com/MAUI/404674/radial-gauge?v=23.2) control to create a dashboard panel in a .NET MAUI app.
 
 ![DevExpress Gauges for .NET MAUI - Smart home dashboard](/Images/resulting-dashboard.png)
