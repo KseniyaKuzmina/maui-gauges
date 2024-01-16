@@ -8,7 +8,7 @@
 
 This example shows how to use the [Radial Gauge](https://docs.devexpress.com/MAUI/404674/radial-gauge?v=23.2) control to create a dashboard panel in a .NET MAUI app.
 
-<img width="20%" alt="DevExpress Gauges for .NET MAUI - Smart home dashboard" src="Images/resulting-dashboard.png">
+<img width="30%" alt="DevExpress Gauges for .NET MAUI - Smart home dashboard" src="Images/resulting-dashboard.png">
 
 ## Implementation Details
 
