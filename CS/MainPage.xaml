@@ -7,7 +7,7 @@
              xmlns:ios="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:local="clr-namespace:maui_gauges"
              ios:Page.UseSafeArea="true"
-             x:Class= "maui_gauges.MainPage">
+             x:Class= "maui_gauges.MainPage" Appearing="ContentPage_Appearing" Disappearing="ContentPage_Disappearing">
     <ContentPage.Behaviors>
         <dxcr:SystemBarBehavior AndroidNavigationBarBackground="{dxcr:ThemeColor SurfaceContainer}"
             AndroidStatusBarBackground="{dxcr:ThemeColor SurfaceContainer}"/>
