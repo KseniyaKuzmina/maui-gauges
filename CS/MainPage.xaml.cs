@@ -36,5 +36,15 @@ namespace maui_gauges {
             e.Length = ON.Idiom(14d, 20d);
             e.Offset = -scale.Thickness / 2d - e.Length / 2d;
         }
+
+        private void ContentPage_Appearing(object sender, EventArgs e) {
+            RadialGaugeViewModel viewModel = (RadialGaugeViewModel)BindingContext;
+            viewModel.StartObserving();
+        }
+
+        private void ContentPage_Disappearing(object sender, EventArgs e) {
+            RadialGaugeViewModel viewModel = (RadialGaugeViewModel)BindingContext;
+            viewModel.StopObserving();
+        }
     }
 }
