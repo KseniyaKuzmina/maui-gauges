@@ -11,6 +11,9 @@ namespace maui_gauges {
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseDevExpressCollectionView()
+                .UseDevExpressControls()
+                .UseDevExpressGauges()
                 .UseDevExpress(useLocalization: true)
                 .ConfigureFonts(fonts => {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
